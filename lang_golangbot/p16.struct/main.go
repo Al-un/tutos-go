@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/al-un/tutos/helloworld/p16.struct/computer"
+	"github.com/al-un/tutos-go/lang_golangbot/p16.struct/computer"
 )
 
 // Address ...
