@@ -26,6 +26,9 @@ const dbName = "go_todos"
 // Collection (table) name
 const collName = "todolist"
 
+// CORS
+const allowedHosts = "http://localhost:3000"
+
 // collection object/instance
 var collection *mongo.Collection
 
@@ -57,71 +60,101 @@ func init() {
 // GetAllTask "get all task" route
 func GetAllTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	payload := getAllTask()
-	json.NewEncoder(w).Encode(payload)
+	w.Header().Set("Access-Control-Allow-Origin", allowedHosts)
+
+	if r.Method == "GET" {
+		payload := getAllTask()
+		json.NewEncoder(w).Encode(payload)
+	}
 }
 
 // CreateTask "create task" route
 func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", allowedHosts)
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	var task models.TodoList
-	_ = json.NewDecoder(r.Body).Decode(&task)
-	fmt.Println("To be created task: ", task)
+	if r.Method == "POST" {
+		var task models.TodoList
+		// fmt.Println("To be created r.Body: ", r)
+		err := json.NewDecoder(r.Body).Decode(&task)
+		if err != nil {
+			log.Fatal(err)
+		}
+		// fmt.Println("To be created task: ", task)
 
-	insertOneTask(task)
-	json.NewEncoder(w).Encode(task)
+		insertOneTask(task)
+		json.NewEncoder(w).Encode(task)
+	}
 }
 
 // TaskComplete "update status" route
 func TaskComplete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", allowedHosts)
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	params := mux.Vars(r)
-	taskComplete(params["id"])
-	json.NewEncoder(w).Encode(params["id"])
+	if r.Method == "PUT" {
+		params := mux.Vars(r)
+		taskComplete(params["id"])
+		json.NewEncoder(w).Encode(params["id"])
+	}
 }
 
 // UndoTask "cancel status update" route
 func UndoTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", allowedHosts)
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	params := mux.Vars(r)
-	undoTask(params["id"])
-	json.NewEncoder(w).Encode(params["id"])
+	if r.Method == "PUT" {
+		params := mux.Vars(r)
+		undoTask(params["id"])
+		json.NewEncoder(w).Encode(params["id"])
+	}
 }
 
 // DeleteTask "delete task" route
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", allowedHosts)
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	params := mux.Vars(r)
-	deleteOneTask(params["id"])
-	json.NewEncoder(w).Encode(params["id"])
+	if r.Method == "DELETE" {
+		params := mux.Vars(r)
+		deleteOneTask(params["id"])
+		json.NewEncoder(w).Encode(params["id"])
+	}
 }
 
 // DeleteAllTask is ARMEGEDDON!
 func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", allowedHosts)
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	count := deleteAllTask()
-	json.NewEncoder(w).Encode(count)
+	if r.Method == "DELETE" {
+		count := deleteAllTask()
+		json.NewEncoder(w).Encode(count)
+	}
+}
+
+// DeleteDoneTask pouet
+func DeleteDoneTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", allowedHosts)
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if r.Method == "DELETE" {
+		count := deleteDoneTask()
+		json.NewEncoder(w).Encode(count)
+	}
 }
 
 func getAllTask() []primitive.M {
@@ -215,6 +248,17 @@ func deleteAllTask() int64 {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Deleted documents: ", d.DeletedCount)
+	fmt.Println("Deleted all tasks: ", d.DeletedCount)
+	return d.DeletedCount
+}
+
+// Delete all task
+func deleteDoneTask() int64 {
+	d, err := collection.DeleteMany(context.Background(), bson.M{"status": true}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Deleted done tasks: ", d.DeletedCount)
 	return d.DeletedCount
 }
