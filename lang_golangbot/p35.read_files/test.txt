@@ -1,0 +1,5 @@
+Helloword
+This is some text
+ちょっと日本語
+
+Other boring stuff here
