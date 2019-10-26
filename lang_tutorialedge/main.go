@@ -1,10 +1,9 @@
 package main
 
-import (
-	"github.com/al-un/tutos-go/lang_tutorialedge/beginner"
-)
+import "github.com/al-un/tutos-go/lang_tutorialedge/intermediate"
 
 func main() {
-	beginner.RunJSON()
-	// intermediate.RunVariadicFunction()
+	// beginner.RunJSON()
+	// concurrency.RunWaitGroup()
+	intermediate.RunSimpleWebServer()
 }
