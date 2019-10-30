@@ -2,7 +2,7 @@
 FROM golang:1.12.0-alpine3.9
 
 # Create an /app folder
-RUN mkdir /app
+# RUN mkdir /app
 
 # Copy current directory to app ?
 COPY . /go/src/github.com/al-un/tutos-go/lang_tutorialedge
@@ -20,4 +20,4 @@ WORKDIR /go/src/github.com/al-un/tutos-go/lang_tutorialedge
 RUN go build -o main-simple-web-server .
 
 # Run!
-CMD ["main-simple-web-server"]
+CMD ["/go/src/github.com/al-un/tutos-go/lang_tutorialedge/main-simple-web-server"]
