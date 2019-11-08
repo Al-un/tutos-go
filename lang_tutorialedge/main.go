@@ -1,9 +1,15 @@
 package main
 
-import "github.com/al-un/tutos-go/lang_tutorialedge/intermediate"
+import "github.com/al-un/tutos-go/lang_tutorialedge/fileupload"
 
 func main() {
 	// beginner.RunJSON()
+
 	// concurrency.RunWaitGroup()
-	intermediate.RunSimpleWebServer()
+
+	// filesystem.RunTemporaryFiles()
+
+	fileupload.RunFileUpload()
+
+	// intermediate.RunSimpleWebServer()
 }
