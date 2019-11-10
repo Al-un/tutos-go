@@ -1,6 +1,8 @@
 package main
 
-import "github.com/al-un/tutos-go/lang_tutorialedge/fileupload"
+import (
+	"github.com/al-un/tutos-go/lang_tutorialedge/intermediate"
+)
 
 func main() {
 	// beginner.RunJSON()
@@ -9,7 +11,7 @@ func main() {
 
 	// filesystem.RunTemporaryFiles()
 
-	fileupload.RunFileUpload()
+	// fileupload.RunFileUpload()
 
-	// intermediate.RunSimpleWebServer()
+	intermediate.RunRestClient()
 }
