@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/al-un/tutos-go/lang_tutorialedge/intermediate"
-)
+import "github.com/al-un/tutos-go/lang_tutorialedge/websocket"
 
 func main() {
 	// beginner.RunJSON()
@@ -13,5 +11,7 @@ func main() {
 
 	// fileupload.RunFileUpload()
 
-	intermediate.RunRestClient()
+	// intermediate.RunRestClient()
+
+	websocket.RunWebsocket()
 }
