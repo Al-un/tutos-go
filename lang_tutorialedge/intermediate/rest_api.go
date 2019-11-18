@@ -12,14 +12,14 @@ import (
 )
 
 type article struct {
-	Id      int    `json:"id"`
+	ID      int    `json:"id"`
 	Title   string `json:"title"`
 	Desc    string `json:"description"`
 	Content string `json:"content"`
 }
 
 var articles []article
-var articleNextId int
+var articleNextID int
 
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "home page")
@@ -40,7 +40,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("GET Article ID %d\n", id)
 
 	for _, a := range articles {
-		if a.Id == id {
+		if a.ID == id {
 			json.NewEncoder(w).Encode(a)
 			return
 		}
@@ -54,11 +54,11 @@ func postArticle(w http.ResponseWriter, r *http.Request) {
 
 	var art article
 	json.Unmarshal(reqBody, &art)
-	art.Id = articleNextId
+	art.ID = articleNextID
 	articles = append(articles, art)
 
 	json.NewEncoder(w).Encode(art)
-	articleNextId++
+	articleNextID++
 
 	fmt.Printf("Created: %v\n", art)
 
@@ -74,7 +74,7 @@ func deleteArticle(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("GET Article ID %d\n", id)
 
 	for index, a := range articles {
-		if a.Id == id {
+		if a.ID == id {
 			w.WriteHeader(204)
 			fmt.Printf("Delete %v\n", a)
 
@@ -104,11 +104,11 @@ func setupRoutes() {
 
 func populate() {
 	articles = []article{
-		article{Id: 1, Title: "Article 1", Desc: "Description 1", Content: "Content 1"},
-		article{Id: 2, Title: "Article 2", Desc: "Description 2", Content: "Content 2"},
+		article{ID: 1, Title: "Article 1", Desc: "Description 1", Content: "Content 1"},
+		article{ID: 2, Title: "Article 2", Desc: "Description 2", Content: "Content 2"},
 	}
 
-	articleNextId = 3
+	articleNextID = 3
 }
 
 // RunRestAPI https://tutorialedge.net/golang/creating-restful-api-with-golang/
