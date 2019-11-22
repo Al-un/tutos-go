@@ -11,7 +11,7 @@ func main() {
 
 	// fileupload.RunFileUpload()
 
-	intermediate.RunRestAPI()
+	intermediate.RunNetworkCli()
 
 	// websocket.RunWebsocket()
 }
